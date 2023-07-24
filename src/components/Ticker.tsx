@@ -42,7 +42,7 @@ export function Ticker() {
     let etLabels: string[] = [];
 
     const socket = new WebSocket(
-      `wss://ws.finnhub.io?token=${process.env.REACT_APP_API_KEY!}`
+      `${process.env.REACT_APP_URL!}?token=${process.env.REACT_APP_API_KEY!}`
     );
 
     socket.addEventListener("open", function (event) {
@@ -62,7 +62,7 @@ export function Ticker() {
       const tickers = data.data;
       if (tickers && tickers.length) {
         for (let ticker of tickers) {
-          const price = ticker.p.toFixed(3);
+          const price = ticker.p.toFixed(6);
           const t = parseInt(ticker.t);
           const date = new Date(t);
           const hours = date.getHours();
