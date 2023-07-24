@@ -91,7 +91,8 @@ export function Ticker() {
           const hours = date.getHours();
           const min = date.getMinutes();
           const hr = hours % 12 || 12;
-          const formatTime = hr.toString() + ":" + min.toString();
+          const formatMin = min < 10 ? "0" + min.toString() : min.toString();
+          const formatTime = hr.toString() + ":" + formatMin;
           if (ticker.s === "BINANCE:BTCUSDT") {
             bitcoinData.push(price);
             bitcoinLabels.push(formatTime);
