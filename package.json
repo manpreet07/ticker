@@ -25,7 +25,8 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "7.21.11",
     "react-chartjs-2": "^5.2.0",
-    "chart": "^0.1.2"
+    "chart": "^0.1.2",
+    "dot-env": "^0.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

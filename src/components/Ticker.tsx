@@ -14,13 +14,14 @@ import {
 export function Ticker() {
   const [btcPrice, setBTCPrice] = useState({});
   const [btcData, setBTCData] = useState([] as number[]);
-  let [btcLabels, setBTCLabels] = useState([] as string[]);
+  const [btcLabels, setBTCLabels] = useState([] as string[]);
+
   const [dogePrice, setDOGEPrice] = useState({});
   const [dogeData, setDogeData] = useState([] as number[]);
-  let [dogeLabels, setDogeLabels] = useState([] as string[]);
+  const [dogeLabels, setDogeLabels] = useState([] as string[]);
   const [ethPrice, setETHPrice] = useState({});
   const [ethData, setETHData] = useState([] as number[]);
-  let [ethLabels, setETHLabels] = useState([] as string[]);
+  const [ethLabels, setETHLabels] = useState([] as string[]);
 
   ChartJS.register(
     CategoryScale,
@@ -33,16 +34,18 @@ export function Ticker() {
   );
 
   useEffect(() => {
-    // let btcData: any[] = [];
-    // let dogeData: any[] = [];
-    // let ethData: any[] = [];
+    let bitcoinData: number[] = [];
+    let dgData: number[] = [];
+    let etData: number[] = [];
+    let bitcoinLabels: string[] = [];
+    let dgLabels: string[] = [];
+    let etLabels: string[] = [];
 
     const socket = new WebSocket(
-      `wss://ws.finnhub.io?token=ciu46uhr01qkv67u4210ciu46uhr01qkv67u421g`
+      `wss://ws.finnhub.io?token=${process.env.REACT_APP_API_KEY!}`
     );
 
     socket.addEventListener("open", function (event) {
-      console.log("connection established  ", event);
       socket.send(
         JSON.stringify({ type: "subscribe", symbol: "BINANCE:BTCUSDT" })
       );
@@ -57,7 +60,6 @@ export function Ticker() {
     socket.addEventListener("message", function (event) {
       const data = JSON.parse(event.data);
       const tickers = data.data;
-      console.log("ticker >>>>> ", tickers);
       if (tickers && tickers.length) {
         for (let ticker of tickers) {
           const price = ticker.p.toFixed(3);
@@ -68,47 +70,47 @@ export function Ticker() {
           const hr = hours % 12 || 12;
           const formatTime = hr.toString() + ":" + min.toString();
           if (ticker.s === "BINANCE:BTCUSDT") {
-            if (btcLabels && btcLabels.length) {
-              const lb = parseInt(btcLabels[0].split(":")[0]);
+            if (bitcoinLabels && bitcoinLabels.length) {
+              const lb = parseInt(bitcoinLabels[0].split(":")[0]);
               if (hr - lb === 1) {
-                btcLabels = [];
+                bitcoinLabels = [];
               }
             }
-            btcData.push(price);
-            btcLabels.push(formatTime);
+            bitcoinData.push(price);
+            bitcoinLabels.push(formatTime);
             setBTCPrice(ticker);
-            setBTCData(btcData);
-            setBTCLabels(btcLabels);
+            setBTCData(bitcoinData);
+            setBTCLabels(bitcoinLabels);
           }
 
           if (ticker.s === "BINANCE:DOGEUSDT") {
-            if (dogeLabels && dogeLabels.length) {
-              const lb = parseInt(dogeLabels[0].split(":")[0]);
+            if (dgLabels && dgLabels.length) {
+              const lb = parseInt(dgLabels[0].split(":")[0]);
               if (hr - lb === 1) {
-                dogeLabels = [];
+                dgLabels = [];
               }
             }
 
-            dogeData.push(price);
-            dogeLabels.push(formatTime);
+            dgData.push(price);
+            dgLabels.push(formatTime);
             setDOGEPrice(ticker);
-            setDogeData(dogeData);
-            setDogeLabels(dogeLabels);
+            setDogeData(dgData);
+            setDogeLabels(dgLabels);
           }
 
           if (ticker.s === "BINANCE:ETHUSDT") {
-            if (ethLabels && ethLabels.length) {
-              const lb = parseInt(ethLabels[0].split(":")[0]);
+            if (etLabels && etLabels.length) {
+              const lb = parseInt(etLabels[0].split(":")[0]);
               if (hr - lb === 1) {
-                ethLabels = [];
+                etLabels = [];
               }
             }
 
-            ethData.push(price);
-            ethLabels.push(formatTime);
+            etData.push(price);
+            etLabels.push(formatTime);
             setETHPrice(ticker);
-            setETHData(ethData);
-            setETHLabels(ethLabels);
+            setETHData(etData);
+            setETHLabels(etLabels);
           }
         }
       }
