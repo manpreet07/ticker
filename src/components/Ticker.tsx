@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 
 export function Ticker() {
+  const TOKEN = process.env.REACT_APP_API_KEY!;
   const [btcPrice, setBTCPrice] = useState({});
   const [btcData, setBTCData] = useState([] as number[]);
   let [btcLabels, setBTCLabels] = useState([] as string[]);
@@ -33,13 +34,7 @@ export function Ticker() {
   );
 
   useEffect(() => {
-    // let btcData: any[] = [];
-    // let dogeData: any[] = [];
-    // let ethData: any[] = [];
-
-    const socket = new WebSocket(
-      `wss://ws.finnhub.io?token=ciu46uhr01qkv67u4210ciu46uhr01qkv67u421g`
-    );
+    const socket = new WebSocket(`wss://ws.finnhub.io?token=${TOKEN}`);
 
     socket.addEventListener("open", function (event) {
       console.log("connection established  ", event);
@@ -57,7 +52,6 @@ export function Ticker() {
     socket.addEventListener("message", function (event) {
       const data = JSON.parse(event.data);
       const tickers = data.data;
-      console.log("ticker >>>>> ", tickers);
       if (tickers && tickers.length) {
         for (let ticker of tickers) {
           const price = ticker.p.toFixed(3);
