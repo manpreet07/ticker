@@ -11,6 +11,25 @@ import {
   Legend,
 } from "chart.js";
 
+const backgroundColor = [
+  "rgba(255, 99, 132, 0.2)",
+  "rgba(255, 159, 64, 0.2)",
+  "rgba(255, 205, 86, 0.2)",
+  "rgba(75, 192, 192, 0.2)",
+  "rgba(54, 162, 235, 0.2)",
+  "rgba(153, 102, 255, 0.2)",
+  "rgba(201, 203, 207, 0.2)",
+];
+const borderColor = [
+  "rgb(255, 99, 132)",
+  "rgb(255, 159, 64)",
+  "rgb(255, 205, 86)",
+  "rgb(75, 192, 192)",
+  "rgb(54, 162, 235)",
+  "rgb(153, 102, 255)",
+  "rgb(201, 203, 207)",
+];
+
 export function Ticker() {
   const [btcPrice, setBTCPrice] = useState({});
   const [btcData, setBTCData] = useState([] as number[]);
@@ -70,12 +89,6 @@ export function Ticker() {
           const hr = hours % 12 || 12;
           const formatTime = hr.toString() + ":" + min.toString();
           if (ticker.s === "BINANCE:BTCUSDT") {
-            if (bitcoinLabels && bitcoinLabels.length) {
-              const lb = parseInt(bitcoinLabels[0].split(":")[0]);
-              if (hr - lb === 1) {
-                bitcoinLabels = [];
-              }
-            }
             bitcoinData.push(price);
             bitcoinLabels.push(formatTime);
             setBTCPrice(ticker);
@@ -84,13 +97,6 @@ export function Ticker() {
           }
 
           if (ticker.s === "BINANCE:DOGEUSDT") {
-            if (dgLabels && dgLabels.length) {
-              const lb = parseInt(dgLabels[0].split(":")[0]);
-              if (hr - lb === 1) {
-                dgLabels = [];
-              }
-            }
-
             dgData.push(price);
             dgLabels.push(formatTime);
             setDOGEPrice(ticker);
@@ -99,13 +105,6 @@ export function Ticker() {
           }
 
           if (ticker.s === "BINANCE:ETHUSDT") {
-            if (etLabels && etLabels.length) {
-              const lb = parseInt(etLabels[0].split(":")[0]);
-              if (hr - lb === 1) {
-                etLabels = [];
-              }
-            }
-
             etData.push(price);
             etLabels.push(formatTime);
             setETHPrice(ticker);
@@ -129,8 +128,9 @@ export function Ticker() {
         label: "BTC-USD Price",
         data: btcData,
         fill: false,
-        borderColor: "rgba(75,192,192,1)",
-        tension: 0.1,
+        borderWidth: 1,
+        backgroundColor,
+        borderColor,
       },
     ],
     point: {
@@ -145,8 +145,9 @@ export function Ticker() {
         label: "DOGE-USD Price",
         data: dogeData,
         fill: false,
-        borderColor: "rgba(75,192,192,1)",
-        tension: 0.1,
+        borderWidth: 1,
+        backgroundColor,
+        borderColor,
       },
     ],
     point: {
@@ -161,8 +162,9 @@ export function Ticker() {
         label: "ETH-USD Price",
         data: ethData,
         fill: false,
-        borderColor: "rgba(75,192,192,1)",
-        tension: 0.1,
+        borderWidth: 1,
+        backgroundColor,
+        borderColor,
       },
     ],
     point: {
@@ -180,10 +182,13 @@ export function Ticker() {
             data={btcLineData}
             style={{
               backgroundColor: "black",
-              borderColor: "white",
               display: "inline",
             }}
-            options={{ elements: { point: { pointStyle: false } } }}
+            options={{
+              elements: { point: { pointStyle: false } },
+              responsive: true,
+              maintainAspectRatio: false,
+            }}
           />
         ) : (
           <p>Loading...</p>
@@ -202,10 +207,13 @@ export function Ticker() {
             data={dogeLineData}
             style={{
               backgroundColor: "black",
-              borderColor: "white",
               display: "inline",
             }}
-            options={{ elements: { point: { pointStyle: false } } }}
+            options={{
+              elements: { point: { pointStyle: false } },
+              responsive: true,
+              maintainAspectRatio: false,
+            }}
           />
         ) : (
           <p>Loading...</p>
@@ -224,10 +232,13 @@ export function Ticker() {
             data={ethLineData}
             style={{
               backgroundColor: "black",
-              borderColor: "white",
               display: "inline",
             }}
-            options={{ elements: { point: { pointStyle: false } } }}
+            options={{
+              elements: { point: { pointStyle: false } },
+              responsive: true,
+              maintainAspectRatio: false,
+            }}
           />
         ) : (
           <p>Loading...</p>
