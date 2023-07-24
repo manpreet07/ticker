@@ -1,5 +1,5 @@
 {
-  "name": "ticker-app",
+  "name": "ticker",
   "version": "0.0.0-development",
   "private": true,
   "dependencies": {

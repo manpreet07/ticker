@@ -64,6 +64,10 @@ export function Ticker() {
       `${process.env.REACT_APP_URL!}?token=${process.env.REACT_APP_API_KEY!}`
     );
 
+    socket.addEventListener("error", function (error) {
+      console.log("websocket error: ", error);
+    });
+
     socket.addEventListener("open", function (event) {
       socket.send(
         JSON.stringify({ type: "subscribe", symbol: "BINANCE:BTCUSDT" })

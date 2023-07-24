@@ -6,7 +6,7 @@ import { Ticker } from "./components/Ticker";
 function App() {
   return (
     <div className="App">
-      <h2>Realtime Crypto Currency Price</h2>
+      <h2>Realtime Crypto Currency Latest Trade Price</h2>
       <Ticker />
     </div>
   );
